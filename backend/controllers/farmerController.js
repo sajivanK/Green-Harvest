@@ -2,6 +2,39 @@ import farmerModel from '../models/farmerModel.js';
 import userModel from '../models/userModel.js';
 import fs from 'fs';
 // Apply to become a farmer
+// export const applyFarmer = async (req, res) => {
+//     const { farmName, farmLocation, contactNumber, nicNumber } = req.body;
+
+//     try {
+//         const user = await userModel.findById(req.user.id);
+//         if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+//         const existingFarmer = await farmerModel.findOne({ userId: req.user.id });
+//         if (existingFarmer) return res.status(400).json({ success: false, message: 'Already registered as a farmer' });
+
+//         const existingNIC = await farmerModel.findOne({ nicNumber });
+//         if (existingNIC) return res.status(400).json({ success: false, message: 'NIC number already exists' });
+
+//         // ✅ Extract profile image filename
+//         const profileImage = req.file ? req.file.filename : '';
+
+//         const farmer = new farmerModel({
+//             userId: user._id,
+//             farmName,
+//             farmLocation,
+//             contactNumber,
+//             nicNumber,
+//             profileImage,
+//         });
+
+//         await farmer.save();
+//         res.status(201).json({ success: true, farmer });
+//     } catch (error) {
+//         res.status(500).json({ success: false, message: error.message });
+//     }
+// };
+
+// Apply to become a farmer
 export const applyFarmer = async (req, res) => {
     const { farmName, farmLocation, contactNumber, nicNumber } = req.body;
 
@@ -28,11 +61,18 @@ export const applyFarmer = async (req, res) => {
         });
 
         await farmer.save();
-        res.status(201).json({ success: true, farmer });
+
+        // ✅ Add "Farmer" role to the user
+        await userModel.findByIdAndUpdate(req.user.id, {
+            $addToSet: { roles: 'Farmer' }
+        });
+
+        res.status(201).json({ success: true, message: "Farmer registered successfully", farmer });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
 
 
 // Update farmer details

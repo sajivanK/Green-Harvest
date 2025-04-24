@@ -103,7 +103,7 @@ const FarmerRegistration = ({ initialData, onClose }) => {
                     onClose();
                 } else {
                     setTimeout(() => {
-                        navigate('/');
+                        navigate('/overview');
                     }, 2000);
                 }
             } else {

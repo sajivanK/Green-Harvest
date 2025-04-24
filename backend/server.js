@@ -11,6 +11,9 @@ import chatbotRouter from "./routes/chatbotRoutes.js";
 import cartRouter from "./routes/cartRoutes.js"
 import checkoutRoutes from "./routes/checkoutRoutes.js"
 import notificationRouter from "./routes/notificationRoutes.js";
+import workerRouter from "./routes/workerRoutes.js";
+import proofRouter from "./routes/proofRoutes.js";
+import profileRouter from "./routes/profileRoutes.js";
 
 
 
@@ -39,6 +42,8 @@ app.use("/api/chatbot", chatbotRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/payment", checkoutRoutes);
 app.use("/api/notifications", notificationRouter);
-
+app.use('/api/worker', workerRouter)
+app.use('/api/proof', proofRouter)
+app.use('/api/profile', profileRouter)
 
 app.listen(port, ()=> console.log(`Server started on PORT: ${port}`));

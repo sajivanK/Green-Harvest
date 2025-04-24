@@ -177,7 +177,7 @@ const BuyNowPage = () => {
   
       if (res.data.success) {
         toast.success("Product added to cart successfully!");
-        navigate("/display-product");  // Auto redirect to Product Display Page
+        navigate("/");  // Auto redirect to Product Display Page
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to add product to cart");
