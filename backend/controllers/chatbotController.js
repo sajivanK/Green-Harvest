@@ -4,7 +4,8 @@ import ChatModel from "../models/chatModel.js";
 
 dotenv.config();
 
-const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct";
+const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base";
+//const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct";
 //const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/deepseek-ai/DeepSeek-R1";
 const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
 
@@ -114,7 +115,7 @@ A:
             {
                 inputs: farmingContext,
                 parameters: {
-                    max_new_tokens: 300,
+                    max_new_tokens: 250,
                 },
             },
             {
