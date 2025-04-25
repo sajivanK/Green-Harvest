@@ -76,6 +76,7 @@ export const applyFarmer = async (req, res) => {
 
 
 // Update farmer details
+
 export const updateFarmer = async (req, res) => {
     const { farmName, farmLocation, contactNumber } = req.body;
     const profileImage = req.file ? req.file.filename : ''; // ✅ Fix this

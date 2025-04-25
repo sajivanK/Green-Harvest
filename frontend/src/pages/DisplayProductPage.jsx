@@ -146,6 +146,8 @@ const DisplayProductPage = () => {
           <Link to="/" className="text-white hover:text-blue-400 text-sm font-medium">Home</Link>
           <Link to="/myorders" className="text-white hover:text-blue-400 text-sm font-medium">My Orders</Link>
           <Link to="/about" className="text-white hover:text-blue-400 text-sm font-medium">About</Link>
+          <Link to="/profile" className="text-white hover:text-blue-400 text-sm font-medium">Profile</Link>
+          <Link to="/login" className="text-white hover:text-blue-400 text-sm font-medium">LogIn</Link>
           <Link to="/cart" className="text-white hover:text-blue-400">
             <ShoppingCart size={20} />
           </Link>
