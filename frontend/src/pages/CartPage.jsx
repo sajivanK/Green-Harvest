@@ -73,8 +73,7 @@ const CartPage = () => {
 
   return (
     <motion.div
-      className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700 mb-8"
-      initial={{ opacity: 0, y: 20 }}
+    className="min-h-screen p-6 bg-gradient-to-r from-[#1da358] via-[#4c906a] to-[#7ec89e] text-black"      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
     >
@@ -190,6 +189,8 @@ const CartPage = () => {
                 },
               })
             }
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-all duration-300"
+
           >
             Proceed to Checkout
           </button>
