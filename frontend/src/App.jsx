@@ -156,8 +156,17 @@ import CompletedTask from './pages/CompletedTask';
 import Earnings from './pages/Earnings';
 import ProfileSettings from './pages/ProfileSettings';
 import ViewWorkers from './pages/ViewWorkers';
-import First from './pages/First'; // ✅ your new welcome page for normal user
+import First from './pages/First'; 
 import UpdateProfile from './pages/UpdateProfile';
+
+
+import AddDetail from './pages/AddDetail';  //vishnu added this line 
+import Preview from './pages/Preview';    //vishnu added this line
+import Billing from './pages/Billing';
+import Transaction from './pages/Transaction';  // ✅ import at the top
+
+
+
 
 function App() {
   const location = useLocation();
@@ -170,7 +179,12 @@ function App() {
     '/',
     '/display-package',
     '/payment',
-    '/view-workers'
+    '/view-workers',
+    '/add-detail',
+    '/preview',
+    '/billing',
+    '/transaction'
+
   ].some(path => location.pathname.startsWith(path) || location.pathname.startsWith('/buy-product/'));
 
   // ✅ Worker-only paths
@@ -199,7 +213,8 @@ function App() {
   const userRoutes = [
     '/profile',
     '/update-profile',
-    '/cart'
+    '/cart',
+    
 
   ];
 
@@ -246,7 +261,15 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/view-workers" element={<ViewWorkers />} />
 
-          {/* ✅ Farmer/Admin Routes */}
+          <Route path="/add-detail" element={<AddDetail />} />
+          <Route path="/preview" element={<Preview />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/transaction" element={<Transaction />} />
+
+
+
+
+         {/* ✅ Farmer/Admin Routes */}
           <Route path="/overview" element={<OverviewPage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/users" element={<UsersPage />} />
@@ -271,7 +294,8 @@ function App() {
 
           {/* ✅ User Route: only /profile for now */}
           <Route path="/profile" element={<First />} />
-          <Route path="/update-profile" element={<UpdateProfile />} />
+          <Route path="/update-profile" element={<UpdateProfile />}
+           />
         </Routes>
       </div>
     </div>
