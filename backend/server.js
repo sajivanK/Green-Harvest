@@ -16,6 +16,10 @@ import proofRouter from "./routes/proofRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import userRouter from './routes/userRoutes.js';
 
+//vishnu added code
+import detailRouter from './routes/detailRoutes.js';
+import transactionRouter from './routes/transactionRoutes.js';
+
 
 const app = express();
 const port = process.env.PORT || 4000
@@ -45,6 +49,10 @@ app.use("/api/notifications", notificationRouter);
 app.use('/api/worker', workerRouter)
 app.use('/api/proof', proofRouter)
 app.use('/api/profile', profileRouter)
+
+//vishnu added code 
+app.use('/api/detail', detailRouter);
+app.use('/api/transaction', transactionRouter);
 
 app.use('/api/user', userRouter);
 

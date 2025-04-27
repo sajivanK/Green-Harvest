@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import axiosApi from "../config/axiosConfig";
 import { Mail, Phone, MapPin, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";      //vishnu added this for passing 
+
 
 const ViewWorkers = () => {
+
+//vishnuja added this code for navigation
+const navigate = useNavigate();
+
   const [workers, setWorkers] = useState([]);
 
   useEffect(() => {
@@ -42,7 +48,7 @@ const ViewWorkers = () => {
 
             <button
               className="mt-6 w-full py-2 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg text-white font-semibold hover:opacity-90 transition-all"
-              onClick={() => alert(`Request sent to ${worker.name}`)}
+              onClick={() => navigate("/add-detail", { state: { workeremail: worker.email } })}  // vishnu added this code 
             >
               Book Now
             </button>
