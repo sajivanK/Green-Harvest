@@ -1,13 +1,12 @@
+
 import dotenv from "dotenv";
 import axios from "axios";
 import ChatModel from "../models/chatModel.js";
 
 dotenv.config();
 
-const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base";
-//const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct";
-//const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/deepseek-ai/DeepSeek-R1";
-const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 export const chatWithBot = async (req, res) => {
     try {
@@ -18,7 +17,6 @@ export const chatWithBot = async (req, res) => {
             return res.status(400).json({ success: false, message: "Message is required" });
         }
 
-        // ✅ Handle greetings
         const casual = message.trim().toLowerCase();
         if (["hi", "hello", "hey"].includes(casual)) {
             const reply = "Hi there! 👋 How can I assist you with farming today?";
@@ -28,110 +26,73 @@ export const chatWithBot = async (req, res) => {
 
         console.log(`User ${userId} asked: ${message}`);
 
-        const farmingContext = `
-You are an advanced **AI Farming Assistant** with expertise in **crop cultivation, vegetable farming, fruit orchards, and dairy farming**. 
+const isTamil = /[\u0B80-\u0BFF]/.test(message);
+
+const farmingPrompt = `
+You are an advanced **AI Farming Assistant** with expertise in **crop cultivation, vegetable farming, fruit orchards, and dairy farming**.
 Your goal is to provide **accurate, research-backed agricultural advice** that helps farmers **increase productivity and sustainability**.
 
-### 🌱 **General Guidelines for Answers:**
 - Use **scientific and practical** farming techniques.
 - Focus on **organic, sustainable**, and **profitable** farming methods.
 - Provide **region-specific** recommendations if necessary.
 - Suggest **disease prevention** strategies using natural methods.
-
----
-
-### 🌾 **Examples of Farming Questions & Best Practices:**
-
-#### **1️⃣ Crop Farming (Grains & Field Crops)**
-- **Q:** What are the best crops for **dry climates**?  
-**A:** The best drought-resistant crops include **sorghum, millet, chickpeas, cowpeas, and lentils**. These crops require **minimal irrigation** and can **tolerate extreme heat**.  
-➜ Use **drip irrigation** to conserve water and increase yield.
-
-- **Q:** What fertilizers should I use for **corn farming**?  
-**A:** Corn thrives on **nitrogen-rich fertilizers**. Use a combination of:
-- Organic: **Compost, manure, and bone meal**
-- Inorganic: **Urea and ammonium nitrate**
-➜ Apply fertilizers **before the tasseling stage** for maximum growth.
-
----
-
-#### **2️⃣ Vegetable Farming 🥬**
-- **Q:** How can I **prevent pests** in organic vegetable farming?  
-**A:** Use **natural pest control** like:
-- **Neem oil spray** for aphids and whiteflies.
-- **Marigolds** as companion plants to repel insects.
-- **Handpicking caterpillars** in leafy greens.
-➜ Avoid **chemical pesticides** to maintain soil health.
-
-- **Q:** What are the best **vegetables for greenhouses**?  
-**A:** The most profitable greenhouse vegetables include:
-- **Tomatoes** 🍅 (Require staking & temperature control)
-- **Lettuce** 🥬 (Fast-growing & low maintenance)
-- **Bell Peppers** 🌶️ (Thrives in controlled humidity)
-➜ Use **hydroponics** for higher yields in greenhouse farming.
-
----
-
-#### **3️⃣ Fruit Orchards 🍎**
-- **Q:** What are the best **fruits for tropical climates**?  
-**A:** The best tropical fruits include:
-- **Mangoes** 🥭 (Heat-tolerant & high yield)
-- **Pineapples** 🍍 (Thrives in acidic soil)
-- **Papayas** 🍈 (Fast-growing & pest-resistant)
-➜ Ensure **regular pruning** to improve fruit quality.
-
-- **Q:** How do I **increase fruit yield in apple orchards**?  
-**A:** Apply these **best practices**:
-- **Prune trees annually** to improve airflow.
-- Use **drip irrigation** to prevent overwatering.
-- Apply **potassium & phosphorus fertilizers** during flowering.
-➜ Protect apples from fungal diseases using **copper-based fungicides**.
-
----
-
-#### **4️⃣ Dairy Farming 🐄**
-- **Q:** How can I **increase milk production in dairy cows**?  
-**A:** Follow these **key dairy farming practices**:
-- Feed cows **high-protein diets** (alfalfa, soy meal, silage).
-- Ensure **clean drinking water** (50–60 liters/day/cow).
-- Maintain a **stress-free, clean barn** to prevent mastitis.
-➜ **Regular veterinary check-ups** boost herd health.
-
-- **Q:** What is the best **natural feed** for dairy cows?  
-**A:** The most nutritious organic feed includes:
-- **Legume-based fodder** (alfalfa, clover, and cowpea hay)
-- **Silage from corn or sorghum** for winter feeding
-- **Mineral supplements** (calcium & phosphorus) to support milk production.
-➜ Avoid excessive grain feeding to prevent **acidosis**.
-
----
+- Keep your answers short, practical, and in clear bullet points.
+${isTamil ? "- ⚡️ Important: Reply in **Tamil language** only." : ""}
+Answer the following farming question:
 
 Q: ${message}
 A:
-        `.trim();
+`.trim();
 
-        const response = await axios.post(
-            HUGGINGFACE_API_URL,
-            {
-                inputs: farmingContext,
-                parameters: {
-                    max_new_tokens: 250,
-                },
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${HUGGINGFACE_API_KEY}`,
-                    "Content-Type": "application/json",
-                },
-                timeout: 15000,
+
+        const sendGeminiRequest = async () => {
+            const maxRetries = 3;
+            let attempt = 0;
+            let delay = 5000;
+
+            while (attempt < maxRetries) {
+                try {
+                    const response = await axios.post(
+                        `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
+                        {
+                            contents: [
+                                {
+                                    role: "user",
+                                    parts: [{ text: farmingPrompt }]
+                                }
+                            ]
+                        },
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            timeout: 60000,
+                        }
+                    );
+                    return response;
+                } catch (error) {
+                    if (error.response?.status === 503 || error.code === "ECONNABORTED") {
+                        attempt++;
+                        console.warn(`Gemini API busy. Retrying (${attempt}/${maxRetries}) after ${delay / 1000} seconds...`);
+                        if (attempt < maxRetries) {
+                            await new Promise((resolve) => setTimeout(resolve, delay));
+                            delay *= 2;
+                        } else {
+                            throw new Error("Service temporarily unavailable after multiple retries.");
+                        }
+                    } else {
+                        throw error;
+                    }
+                }
             }
-        );
+        };
 
-        let generated = response.data[0]?.generated_text || '';
-        generated = generated.replace(/\s+/g, ' ').trim();
-        let reply = generated.split("A:").pop().split("Q:").shift().trim();
+        const response = await sendGeminiRequest();
 
-        if (!/farm|crop|fertilizer|soil|organic|vegetable|livestock|milk|pest/i.test(reply)) {
+        let reply = response.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        reply = reply.replace(/\s+/g, ' ').trim();
+
+        if (!isTamil &&!/farm|crop|fertilizer|soil|organic|vegetable|livestock|milk|pest/i.test(reply)) {
             reply = "Sorry, I couldn't generate a proper farming-related answer. Please try rephrasing your question!";
         }
 
@@ -140,8 +101,8 @@ A:
 
     } catch (error) {
         console.error("Chatbot Error:", error.response?.data || error.message);
-        if (error.response?.status === 503) {
-            return res.status(503).json({ success: false, message: "Hugging Face API is temporarily unavailable. Try again later." });
+        if (error.message.includes("Service temporarily unavailable after multiple retries.")) {
+            return res.status(503).json({ success: false, message: "Gemini server is temporarily busy. Please try again later." });
         }
         res.status(500).json({ success: false, message: "Failed to process request" });
     }

@@ -15,6 +15,7 @@ import workerRouter from "./routes/workerRoutes.js";
 import proofRouter from "./routes/proofRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import userRouter from './routes/userRoutes.js';
+import orderRoutes from "./routes/orderRoutes.js";
 
 //vishnu added code
 import detailRouter from './routes/detailRoutes.js';
@@ -49,7 +50,7 @@ app.use("/api/notifications", notificationRouter);
 app.use('/api/worker', workerRouter)
 app.use('/api/proof', proofRouter)
 app.use('/api/profile', profileRouter)
-
+app.use("/api/orders", orderRoutes);
 //vishnu added code 
 app.use('/api/detail', detailRouter);
 app.use('/api/transaction', transactionRouter);

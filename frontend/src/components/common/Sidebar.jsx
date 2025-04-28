@@ -9,7 +9,7 @@ const SIDEBAR_ITEMS = [
 	{ name: "Subscribers", icon: Users, color: "#EC4899", href: "/users" },
 	{ name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/orders" },
     { name: "Add Product", icon: PackagePlus, color: "#10B981", href: "/add-product" },
-	{ name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/analytics" },
+	{ name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/farmer-report" },
     { name: "Add Packages", icon: Package, color: "#10B981", href: "/add-package" },
     { name: "ChatBot", icon: MessageCircle, color: "#FBBF24", href: "/chatbot" },
 	{ name: "Settings", icon: Settings, color: "#6EE7B7", href: "/settings" },
