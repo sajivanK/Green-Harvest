@@ -102,25 +102,56 @@ const ChatBot = () => {
     };
 
     // ✅ Voice Output (Text-to-Speech)
+    // const speakText = (text) => {
+    //     if ("speechSynthesis" in window) {
+    //         window.speechSynthesis.cancel(); // Cancel any previous speech
+
+    //         const utterance = new SpeechSynthesisUtterance(text);
+    //         utterance.lang = "en-IN";
+    //         utterance.rate = 0.8;
+    //         utterance.volume = 1;
+
+    //         utterance.onstart = () => setIsSpeaking(true);
+    //         utterance.onend = () => setIsSpeaking(false);
+    //         utterance.onerror = () => setIsSpeaking(false);
+
+    //         speechRef.current = utterance;
+    //         window.speechSynthesis.speak(utterance);
+    //     } else {
+    //         console.error("❌ Speech synthesis not supported in this browser.");
+    //     }
+    // };
+
     const speakText = (text) => {
         if ("speechSynthesis" in window) {
-            window.speechSynthesis.cancel(); // Cancel any previous speech
-
+            window.speechSynthesis.cancel();
+    
+            // ✅ Detect if the text is Tamil
+            const isTamil = /[\u0B80-\u0BFF]/.test(text);
+    
+            if (isTamil) {
+                console.log("🛑 Tamil detected. Skipping voice output. Showing text only.");
+                return; // ❗ Don't speak Tamil text
+            }
+    
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = "en-IN";
-            utterance.rate = 0.8;
+            utterance.lang = "en-IN"; // English voice
+            utterance.rate = 0.9;
             utterance.volume = 1;
-
+    
             utterance.onstart = () => setIsSpeaking(true);
             utterance.onend = () => setIsSpeaking(false);
             utterance.onerror = () => setIsSpeaking(false);
-
+    
             speechRef.current = utterance;
             window.speechSynthesis.speak(utterance);
         } else {
             console.error("❌ Speech synthesis not supported in this browser.");
         }
     };
+    
+    
+    
 
     // ✅ Stop Voice Output
     const stopSpeaking = () => {
@@ -151,7 +182,7 @@ const ChatBot = () => {
     return (
         <div className="flex-1 overflow-auto relative z-10 max-w-4xl mx-auto py-50 px-4 lg:px-8">
             <div className="max-w-lg mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold text-white mb-4">🎙️ AI ChatBot for Farmers</h2>
+                <h2 className="text-2xl font-bold text-white mb-4">GreenBuddy AI</h2>
 
                 <div className="h-64 overflow-auto bg-gray-700 p-4 rounded-lg">
                     {messages.map((msg, index) => (

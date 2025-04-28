@@ -158,6 +158,7 @@ import ProfileSettings from './pages/ProfileSettings';
 import ViewWorkers from './pages/ViewWorkers';
 import First from './pages/First'; 
 import UpdateProfile from './pages/UpdateProfile';
+import GenerateFullReport from './pages/GenerateFullReport';
 
 
 import AddDetail from './pages/AddDetail';  //vishnu added this line 
@@ -206,7 +207,8 @@ function App() {
     '/add-product',
     '/add-package',
     '/chatbot',
-    '/settings'
+    '/settings',
+    '/farmer-report'
   ];
 
   // ✅ User-only paths (currently only profile, will expand later)
@@ -280,6 +282,7 @@ function App() {
           <Route path="/settings" element={<SettingPage />} />
           <Route path="/buy-product/:id" element={<BuyNowPage />} />
           <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/farmer-report" element={<GenerateFullReport />} />
 
           {/* ✅ Signup */}
           <Route path="/signup" element={<Signup />} />
