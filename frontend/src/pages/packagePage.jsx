@@ -11,7 +11,8 @@ const PackagePage = () => {
 
   const fetchPackages = async () => {
     try {
-      const response = await axiosApi.get("/api/package/all");
+      //const response = await axiosApi.get("/api/package/all");
+      const response = await axiosApi.get("/api/package/my-packages", { withCredentials: true });
       if (response.data.success) {
         setPackages(response.data.packages);
       }
