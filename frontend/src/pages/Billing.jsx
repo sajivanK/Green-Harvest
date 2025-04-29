@@ -44,7 +44,9 @@ const Billing = () => {
         paymentAmount: payment,
         orderId: order?.id,
         workerEmail: order?.workerEmail,
-        userEmail: order?.userEmail, // ✅ Pass it here too
+        userEmail: order?.userEmail,
+        workingDays: order?.days,
+        workingHours: order?.hours,
       },
     });
   };
