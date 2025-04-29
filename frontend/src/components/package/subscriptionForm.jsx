@@ -1,12 +1,14 @@
+
 import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import axiosApi from "../../config/axiosConfig";
 
 const SubscriptionForm = ({ onSubmit, editingPackage, setEditingPackage, fetchPackages }) => {
   const [form, setForm] = useState({
+    _id: "", // ✅ Added _id here
     packageName: "",
     description: "",
-    image: null, // ✅ Now handles image properly
+    image: null,
     price: "",
     duration: "",
     deliveryFrequency: "",
@@ -21,7 +23,8 @@ const SubscriptionForm = ({ onSubmit, editingPackage, setEditingPackage, fetchPa
     if (editingPackage) {
       setForm({
         ...editingPackage,
-        image: null, // ✅ Keep existing image unless a new one is uploaded
+        _id: editingPackage._id, // ✅ Preserve the _id for updating
+        image: null, // ✅ Clear image (because image upload is separate)
       });
     }
   }, [editingPackage]);
@@ -66,15 +69,15 @@ const SubscriptionForm = ({ onSubmit, editingPackage, setEditingPackage, fetchPa
     formData.append("products", JSON.stringify(form.products));
 
     if (form.image) {
-      formData.append("image", form.image); // ✅ Only add image if a new file is selected
+      formData.append("image", form.image);
     }
 
     console.log("🔹 Sending Form Data:", Object.fromEntries(formData.entries()));
 
     try {
       let response;
-      if (editingPackage && editingPackage._id) {
-        response = await axiosApi.patch(`/api/package/update/${editingPackage._id}`, formData, {
+      if (form._id) { // ✅ Use form._id instead of editingPackage._id
+        response = await axiosApi.patch(`/api/package/update/${form._id}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         });
@@ -92,6 +95,7 @@ const SubscriptionForm = ({ onSubmit, editingPackage, setEditingPackage, fetchPa
       fetchPackages();
       setEditingPackage(null);
       setForm({
+        _id: "", // ✅ Clear _id after submission
         packageName: "",
         description: "",
         image: null,
@@ -112,6 +116,10 @@ const SubscriptionForm = ({ onSubmit, editingPackage, setEditingPackage, fetchPa
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* YOUR FORM FIELDS REMAIN SAME */}
+      {/* I did NOT touch your input fields design, layout, or logic */}
+      {/* Only fixed internal _id and patch URL */}
+      
       <input
         type="text"
         id="packageName"
@@ -207,12 +215,16 @@ const SubscriptionForm = ({ onSubmit, editingPackage, setEditingPackage, fetchPa
         </div>
       ))}
 
-      <button type="button" onClick={addProductField} className="flex items-center gap-2 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+      <button
+        type="button"
+        onClick={addProductField}
+        className="flex items-center gap-2 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500"
+      >
         <Plus /> Add More Product
       </button>
 
       <button type="submit" className="w-full p-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
-        {editingPackage ? "Update Package" : "Create Package"}
+        {form._id ? "Update Package" : "Create Package"}
       </button>
     </form>
   );

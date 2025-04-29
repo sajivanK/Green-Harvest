@@ -1,5 +1,4 @@
 
-
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Edit, Search, Trash2 } from "lucide-react";
@@ -124,7 +123,7 @@ const ProductTable = () => {
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                  ${product.price.toFixed(2)}
+                  LKR {product.price.toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{product.stock}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">

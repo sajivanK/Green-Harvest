@@ -257,3 +257,36 @@ export const getFarmerReport = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getMonthlySalesOverview = async (req, res) => {
+  try {
+    const farmer = await Farmer.findOne({ userId: req.user.id });
+    if (!farmer) {
+      return res.status(404).json({ success: false, message: "Farmer not found." });
+    }
+
+    const sales = await Order.aggregate([
+      { $match: { farmerId: farmer._id } }, // 👈 Get only this farmer's orders
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // 👈 Group by month
+          totalSales: { $sum: "$totalAmount" }
+        }
+      },
+      { $sort: { "_id": 1 } } // 👈 Sort by month ascending (Jan -> Dec)
+    ]);
+
+    // Map numeric month to short month name
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthlySales = sales.map((item) => ({
+      name: monthNames[item._id - 1],
+      sales: item.totalSales
+    }));
+
+    res.status(200).json({ success: true, monthlySales });
+
+  } catch (error) {
+    console.error("❌ Monthly sales fetch error:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch monthly sales" });
+  }
+};

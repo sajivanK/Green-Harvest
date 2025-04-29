@@ -16,6 +16,8 @@ import proofRouter from "./routes/proofRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
 import userRouter from './routes/userRoutes.js';
 import orderRoutes from "./routes/orderRoutes.js";
+import subscriptionRouter from './routes/subscriptionRoutes.js';
+import overviewRoutes from './routes/overviewRoutes.js';
 
 //vishnu added code
 import detailRouter from './routes/detailRoutes.js';
@@ -51,6 +53,9 @@ app.use('/api/worker', workerRouter)
 app.use('/api/proof', proofRouter)
 app.use('/api/profile', profileRouter)
 app.use("/api/orders", orderRoutes);
+app.use('/api/subscription', subscriptionRouter);
+app.use('/api/overview', overviewRoutes);
+
 //vishnu added code 
 app.use('/api/detail', detailRouter);
 app.use('/api/transaction', transactionRouter);

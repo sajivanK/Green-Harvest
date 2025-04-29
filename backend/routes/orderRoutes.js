@@ -9,6 +9,7 @@ import {
   getMonthlySales,
   getOrderStats,
   getFarmerReport,
+  getMonthlySalesOverview,
 } from "../controllers/orderController.js";
 
 import { authenticate } from "../middlewares/authMiddleware.js";
@@ -35,4 +36,6 @@ router.get("/monthly-sales", authenticate, getMonthlySales);
 router.get("/stats", authenticate, getOrderStats);
 
 router.get("/report", authenticate, getFarmerReport);
+
+router.get("/sales-overview", authenticate, getMonthlySalesOverview);
 export default router;
