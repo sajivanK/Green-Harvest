@@ -10,11 +10,13 @@ const Transaction = () => {
   const location = useLocation();
 
   const [showDownloadPopup, setShowDownloadPopup] = useState(false);
-
   const paymentAmount = location.state?.paymentAmount || 0;
   const workerEmail = location.state?.workerEmail || "";
   const orderId = location.state?.orderId || "";
   const userEmail = location.state?.userEmail || "";
+  const workingDays = location.state?.workingDays || "";
+  const workingHours = location.state?.workingHours || "";
+  
 
   const [paymentDetails, setPaymentDetails] = useState({
     cardHolder: "",
@@ -110,6 +112,9 @@ const Transaction = () => {
         // ✅ After navigation, optionally fire notifyWorker
         axios.post("http://localhost:4000/api/transaction/notify-worker", {
           workerEmail,
+          userEmail,
+          workingDays,
+          workingHours,
         }).catch((error) => {
           console.error("Worker notification failed, but payment successful.", error);
         });
@@ -135,20 +140,44 @@ const Transaction = () => {
   const generatePDF = () => {
     const doc = new jsPDF();
   
-    doc.setFontSize(18);
-    doc.text("Payment Invoice", 70, 20);
+    // ✅ Draw Green Border
+    doc.setDrawColor(0, 128, 0); // Green color (RGB)
+    doc.setLineWidth(2.5);
+    doc.rect(10, 10, 190, 277); // (x, y, width, height)
   
+    // ✅ Title
+    doc.setFontSize(20);
+    doc.setTextColor(0, 128, 0); // Green
+    doc.text("Welcome to Smart Waste Management System", 105, 30, { align: 'center' });
+    doc.text("of Green Harvest", 105, 40, { align: 'center' });
+  
+    // ✅ Line separator
+    doc.setDrawColor(0, 128, 0);
+    doc.line(20, 50, 190, 50); // (x1, y1, x2, y2)
+  
+    // ✅ Thank you message
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Thank you for booking the order!", 20, 65);
+  
+    // ✅ Booking Details Heading
+    doc.setFontSize(16);
+    doc.setTextColor(0, 128, 0);
+    doc.text("Booking Details:", 20, 80);
+  
+    // ✅ Booking Details Content
     doc.setFontSize(12);
-    doc.text(`User Email: ${userEmail}`, 20, 40);
-    doc.text(`Worker Email: ${workerEmail}`, 20, 50);
-    doc.text(`Payment Amount: LKR ${paymentAmount}`, 20, 60);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`User Email      : ${userEmail}`, 20, 95);
+    doc.text(`Worker Email    : ${workerEmail}`, 20, 105);
+    doc.text(`Working Days    : ${workingDays}`, 20, 115);
+    doc.text(`Working Hours   :${workingHours}`, 20, 125);
+    doc.text(`Payment Amount  : LKR ${paymentAmount}`, 20, 135);
   
-    // You can add working days, hours, deadline if available
-    doc.text(`Working Days: Monday to Friday`, 20, 70); // Example static
-    doc.text(`Working Hours: 9 AM - 5 PM`, 20, 80); // Example static
-    doc.text(`Expected Deadline: 30-April-2025`, 20, 90); // Example static
-  
-    doc.text("Thank you for using Smart Waste Management System!", 20, 110);
+    // ✅ Footer
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text("Smart Waste Management - Green Harvest © 2025", 105, 290, { align: 'center' });
   
     doc.save("Payment_Invoice.pdf");
   };
@@ -279,72 +308,3 @@ export default Transaction;
 
 
 
-
-
-  /*
-  const verifyOtpAndPay = async () => {
-    try {
-      const res = await axios.post("http://localhost:4000/api/transaction/verify-otp", {
-        email: userEmail,
-        otp,
-      });
-  
-      if (res.status === 200) {
-        // OTP verified
-  
-        alert("Payment Successful! 🎉");
-  
-        await axios.post("http://localhost:4000/api/transaction/notify-worker", {
-          workerEmail,
-        });
-  
-        navigate("/view-workers");
-      } else {
-        alert("Invalid OTP. Please try again.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Invalid OTP or Payment Failed.");
-    }
-  };
-  */
-
-
-
-/*
-  const verifyOtpAndPay = async () => {
-    try {
-      const res = await axios.post("http://localhost:4000/api/transaction/verify-otp", {
-        email: userEmail,
-        otp,
-      });
-
-      if (res.status === 200) {
-        await axios.post("http://localhost:4000/api/transaction/create", {
-          email: userEmail,
-          cardHolder: paymentDetails.cardHolder,
-          cardNumber: paymentDetails.cardNumber,
-          expiryDate: paymentDetails.expiryDate,
-          cvv: paymentDetails.cvv,
-          orderId,
-          workerEmail,
-          paymentAmount,
-        },
-        { withCredentials: true }
-      );
-
-        alert("Payment Successful! 🎉");
-
-        await axios.post("http://localhost:4000/api/transaction/notify-worker", {
-          workerEmail,
-        });
-
-        navigate("/servicepage");
-      } else {
-        alert("Invalid OTP. Please try again.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Invalid OTP or Payment Failed.");
-    }
-  };*/
