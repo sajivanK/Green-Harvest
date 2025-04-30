@@ -26,7 +26,6 @@ import DisplayProof from './pages/DisplayProof';
 import UploadProof from './pages/UploadProof';
 import WorkerDashboard from './pages/WorkerDashboard';
 import CompletedTask from './pages/CompletedTask';
-import Earnings from './pages/Earnings';
 import ProfileSettings from './pages/ProfileSettings';
 import ViewWorkers from './pages/ViewWorkers';
 import First from './pages/First'; 
@@ -70,7 +69,7 @@ function App() {
   const workerRoutes = [
     '/dashboard',
     '/completed',
-    '/earnings',
+    // '/earnings',
     '/profile-settings',
     '/display-proof',
     '/upload-proof'
@@ -172,7 +171,7 @@ function App() {
           <Route path="/upload-proof" element={<UploadProof />} />
           <Route path="/dashboard" element={<WorkerDashboard />} />
           <Route path="/completed" element={<CompletedTask />} />
-          <Route path="/earnings" element={<Earnings />} />
+          {/* <Route path="/earnings" element={<Earnings />} /> */}
           <Route path="/profile-settings" element={<ProfileSettings />} />
 
           {/* ✅ User Route: only /profile for now */}

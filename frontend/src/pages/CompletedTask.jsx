@@ -64,6 +64,7 @@ const CompletedTask = () => {
         <table className="w-full text-white mt-4">
           <thead>
             <tr className="bg-gray-800 text-lg">
+              <th className="py-4 px-6 text-left border-b border-gray-600">Task Id</th>
               <th className="py-4 px-6 text-left border-b border-gray-600">Task</th>
               <th className="py-4 px-6 text-left border-b border-gray-600">Date</th>
               <th className="py-4 px-6 text-left border-b border-gray-600">Status</th>
@@ -79,6 +80,7 @@ const CompletedTask = () => {
                     index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"
                   } hover:bg-gray-600 transition-all`}
                 >
+                                    <td className="py-2 px-4 text-gray-300 font-mono">#{task.id.slice(-5)}</td>
                   <td className="py-4 px-6">{task.title}</td>
                   <td className="py-4 px-6">{task.date}</td>
                   <td className="py-4 px-6 text-green-400 flex items-center gap-2 text-lg">
