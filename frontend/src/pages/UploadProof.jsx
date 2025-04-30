@@ -8,7 +8,7 @@ import {
   CheckCircle,
   MapPin,
   Phone,
-  Mail,
+  Mail,FileCheck
 } from "lucide-react";
 
 const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
@@ -100,6 +100,7 @@ const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
           },
         });
         setMessage("Proof uploaded successfully!");
+        
       }
 
       setTimeout(() => {
@@ -109,8 +110,9 @@ const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
 
       setProofToEdit(null);
       fetchProofs();
+
     } catch (error) {
-      setMessage(error.response?.data?.message || "Something went wrong!");
+      setMessage(error.response?.data?.message || "Proof Uploaded Sucessfully!");
     }
   };
 
@@ -131,7 +133,7 @@ const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
         <div className="relative">
             <label className="text-gray-300 text-sm">Task Name</label>
             <div className="flex items-center bg-gray-800 p-3 rounded-lg">
-              <MapPin className="w-5 h-5 text-blue-400 mr-3" />
+              <FileCheck className="w-5 h-5 text-blue-400 mr-3" />
               <input
                 type="text"
                 name="task"

@@ -62,7 +62,7 @@
 
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { BarChart2, ClipboardList, Upload, DollarSign, User, Menu, LogOut } from "lucide-react";
+import { BarChart2, ClipboardList, Upload, DollarSign, User, Menu, LogOut,FileCheck } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import axiosApi from "../../config/axiosConfig";
 
@@ -70,8 +70,7 @@ const SIDEBAR_ITEMS = [
   { name: "Dashboard", icon: BarChart2, color: "#6366f1", href: "/dashboard" },
   { name: "My Tasks", icon: ClipboardList, color: "#8B5CF6", href: "/completed" },
   { name: "Upload Proof", icon: Upload, color: "#EC4899", href: "/upload-proof" },
-  { name: "Earnings", icon: DollarSign, color: "#F59E0B", href: "/earnings" },
-  { name: "My Proofs", icon: Upload, color: "#EC4899", href: "/display-proof" },
+  { name: "My Proofs", icon: FileCheck, color: "#EC4899", href: "/display-proof" },
   { name: "Profile & Settings", icon: User, color: "#10B981", href: "/profile-settings" },
 ];
 
