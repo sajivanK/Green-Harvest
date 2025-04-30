@@ -1,7 +1,9 @@
-// // frontend/pages/BuyNowPage.jsx
+
+
 // import React, { useEffect, useState } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import axiosApi from "../config/axiosConfig";
+// import { toast } from "react-toastify";
 
 // const BuyNowPage = () => {
 //   const { id } = useParams();
@@ -48,6 +50,27 @@
 //       },
 //     });
 //   };
+
+//   const handleAddToCart = async () => {
+//     try {
+//       const res = await axiosApi.post(
+//         `/api/cart/add-to-cart`,
+//         {
+//           productId: product._id,
+//           quantity: quantity,
+//         },
+//         { withCredentials: true }
+//       );
+  
+//       if (res.data.success) {
+//         toast.success("Product added to cart successfully!");
+//         navigate("/");  // Auto redirect to Product Display Page
+//       }
+//     } catch (err) {
+//       toast.error(err.response?.data?.message || "Failed to add product to cart");
+//     }
+//   };
+  
 
 //   if (!product && !error) return <p className="p-4 text-white">Loading product...</p>;
 //   if (error) return <p className="p-4 text-red-500">{error}</p>;
@@ -97,7 +120,7 @@
 //             </button>
 
 //             <button
-//               onClick={() => alert("Add to Cart logic here")}
+//               onClick={handleAddToCart}
 //               className="bg-orange-600 text-white py-3 rounded hover:bg-orange-700 transition"
 //             >
 //               Add to Cart
@@ -110,8 +133,6 @@
 // };
 
 // export default BuyNowPage;
-
-// frontend/pages/BuyNowPage.jsx
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -147,7 +168,7 @@ const BuyNowPage = () => {
   };
 
   const handleCheckout = () => {
-    navigate("/payment", {
+    navigate("/delivery-info", {
       state: {
         from: "buyNow",
         items: [
@@ -174,16 +195,15 @@ const BuyNowPage = () => {
         },
         { withCredentials: true }
       );
-  
+
       if (res.data.success) {
         toast.success("Product added to cart successfully!");
-        navigate("/");  // Auto redirect to Product Display Page
+        navigate("/");
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to add product to cart");
     }
   };
-  
 
   if (!product && !error) return <p className="p-4 text-white">Loading product...</p>;
   if (error) return <p className="p-4 text-red-500">{error}</p>;
@@ -192,6 +212,18 @@ const BuyNowPage = () => {
 
   return (
     <div className="absolute inset-0 bg-gray-900 flex justify-center items-center p-4 z-10">
+
+      {/* ✅ BACK BUTTON */}
+      <div className="absolute top-4 left-4">
+        <button
+          onClick={() => navigate("/")}
+          className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 transition"
+        >
+          ← Back
+        </button>
+      </div>
+
+      {/* ✅ MAIN PRODUCT CARD */}
       <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-8 flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="flex-1 flex justify-center items-center w-82 h-82 overflow-hidden rounded-2xl shadow-lg">
           <img
@@ -241,6 +273,7 @@ const BuyNowPage = () => {
           </div>
         </div>
       </div>
+
     </div>
   );
 };

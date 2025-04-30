@@ -18,6 +18,8 @@ import userRouter from './routes/userRoutes.js';
 import orderRoutes from "./routes/orderRoutes.js";
 import subscriptionRouter from './routes/subscriptionRoutes.js';
 import overviewRoutes from './routes/overviewRoutes.js';
+import temporaryOrderRoutes from "./routes/temporaryOrderRoutes.js";
+import permanentItemRoutes from './routes/permanentItemRoutes.js';
 
 //vishnu added code
 import detailRouter from './routes/detailRoutes.js';
@@ -55,6 +57,8 @@ app.use('/api/profile', profileRouter)
 app.use("/api/orders", orderRoutes);
 app.use('/api/subscription', subscriptionRouter);
 app.use('/api/overview', overviewRoutes);
+app.use("/api/paymentOrder", temporaryOrderRoutes);
+app.use('/api/permanent-items', permanentItemRoutes);
 
 //vishnu added code 
 app.use('/api/detail', detailRouter);
