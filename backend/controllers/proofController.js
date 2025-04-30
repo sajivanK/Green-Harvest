@@ -182,7 +182,7 @@ export const getWorkerProofs = async (req, res) => {
 // ✅ Update proof (supports optional single new image)
 export const updateProof = async (req, res) => {
   try {
-    const { location, phone, email } = req.body;
+    const { task,location, phone, email } = req.body;
     const proofImage = req.file ? `/uploads/${req.file.filename}` : null;
 
     const proof = await proofModel.findById(req.params.id);
@@ -195,6 +195,7 @@ export const updateProof = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Unauthorized access' });
     }
 
+    proof.task = task || proof.task;
     proof.location = location || proof.location;
     proof.phone = phone || proof.phone;
     proof.email = email || proof.email;
