@@ -7,6 +7,10 @@ const proofSchema = new mongoose.Schema({
     ref: 'worker',
     required: true
   },
+  task: {
+    type: String,
+    required: true
+  },
   location: {
     type: String,
     required: true

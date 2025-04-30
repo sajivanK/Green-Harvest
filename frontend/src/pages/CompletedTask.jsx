@@ -1,31 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axiosApi from "../config/axiosConfig";
 import { CheckCircle, ClipboardList, Trash2, List } from "lucide-react";
 
 const CompletedTask = () => {
-  // Sample Data
-  const completedTasks = [
-    { id: 1, title: "Garbage Collection", date: "March 10, 2025", status: "Completed" },
-    { id: 2, title: "Sorting Recyclables", date: "March 12, 2025", status: "Completed" },
-    { id: 3, title: "Waste Segregation", date: "March 15, 2025", status: "Completed" },
-  ];
+  const [tasks, setTasks] = useState([]);
 
-  // State for task list
-  const [tasks, setTasks] = useState(completedTasks);
+  // Fetch approved proofs
+  const fetchCompletedTasks = async () => {
+    try {
+      const res = await axiosApi.get("/api/proof/worker-proofs");
+      const completedProofs = res.data.proofs.filter(
+        (proof) => proof.proofStatus === "Approved"
+      );
 
-  // Function to delete a task
+      const formattedTasks = completedProofs.map((proof) => ({
+        id: proof._id,
+        title: proof.task || "Unnamed Task",
+        date: new Date(proof.createdAt).toLocaleDateString(),
+        status: "Completed",
+      }));
+
+      setTasks(formattedTasks);
+    } catch (error) {
+      console.error("Failed to load completed tasks:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCompletedTasks();
+  }, []);
+
   const handleDelete = (taskId) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(updatedTasks);
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen bg-gray-950">
       {/* Page Title */}
       <h1 className="text-4xl font-extrabold text-white flex items-center gap-3">
         <ClipboardList className="w-8 h-8 text-blue-400" /> Completed Tasks
       </h1>
       <p className="mt-2 text-gray-400 text-lg">
-        Review all your completed tasks below.
+        Review all your completed tasks uploaded as proof.
       </p>
 
       {/* Total Completed Tasks Card */}
@@ -37,11 +54,11 @@ const CompletedTask = () => {
         <span className="text-3xl font-bold">{tasks.length}</span>
       </div>
 
-      {/* Task Table with Green Border */}
+      {/* Task Table */}
       <div className="mt-8 bg-gray-900 p-6 rounded-lg shadow-xl overflow-x-auto border-2 border-green-500">
         <h2 className="text-xl font-semibold text-white flex items-center gap-3 border-b border-gray-700 pb-3">
           <List className="w-6 h-6 text-blue-400" />
-          Completed Tasks
+          Completed Task Details
         </h2>
 
         <table className="w-full text-white mt-4">

@@ -117,7 +117,7 @@ import workerModel from '../models/workerModel.js';
 // ✅ Upload proof with before & after images
 export const uploadProof = async (req, res) => {
   try {
-    const { location, phone, email } = req.body;
+    const {task, location, phone, email } = req.body;
 
     const beforeImage = req.files?.beforeImage?.[0]
       ? `/uploads/${req.files.beforeImage[0].filename}`
@@ -137,12 +137,16 @@ export const uploadProof = async (req, res) => {
 
     const proof = new proofModel({
       workerId: worker._id,
+      task,
       location,
       phone,
       email,
       beforeImage,
       afterImage,
     });
+
+    proof.proofStatus = 'Approved';
+
 
     await proof.save();
 
