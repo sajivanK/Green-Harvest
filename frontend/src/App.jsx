@@ -33,6 +33,9 @@ import UpdateProfile from './pages/UpdateProfile';
 import GenerateFullReport from './pages/GenerateFullReport';
 import SubscriptionPayment from './pages/SubscriptionPayment';
 import MySubscriptions from './pages/MySubscriptions';
+import DeliveryInfoPage from './pages/DeliveryInfoPage';  // ✅
+import OrderSummary from './pages/OrderSummary'; 
+import OrderEditPage from './pages/OrderEditPage';
 
 
 
@@ -146,6 +149,9 @@ function App() {
           <Route path="/billing" element={<Billing />} />
           <Route path="/transaction" element={<Transaction />} />
           <Route path="/subscription-payment" element={<SubscriptionPayment />} />
+          <Route path="/delivery-info" element={<DeliveryInfoPage />} />
+          <Route path="/summary" element={<OrderSummary />} /> 
+          <Route path="/edit" element={<OrderEditPage />} /> 
 
 
 
