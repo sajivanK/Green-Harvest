@@ -15,6 +15,7 @@ const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    task:"",
     location: "",
     phone: "",
     email: "",
@@ -28,6 +29,7 @@ const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
   useEffect(() => {
     if (proofToEdit) {
       setFormData({
+        task : proofToEdit.task || "",
         location: proofToEdit.location || "",
         phone: proofToEdit.phone || "",
         email: proofToEdit.email || "",
@@ -69,6 +71,7 @@ const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
     }
 
     const form = new FormData();
+    form.append("task", formData.task);
     form.append("location", formData.location);
     form.append("phone", formData.phone);
     form.append("email", formData.email);
@@ -124,6 +127,23 @@ const UploadProof = ({ proofToEdit, setProofToEdit, fetchProofs }) => {
         {message && <p className="mt-4 text-center text-green-500">{message}</p>}
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+
+        <div className="relative">
+            <label className="text-gray-300 text-sm">Task Name</label>
+            <div className="flex items-center bg-gray-800 p-3 rounded-lg">
+              <MapPin className="w-5 h-5 text-blue-400 mr-3" />
+              <input
+                type="text"
+                name="task"
+                value={formData.task}
+                onChange={handleChange}
+                placeholder="Enter your Task"
+                className="w-full bg-transparent text-white outline-none"
+                required
+              />
+            </div>
+          </div>
+
           {/* Location Field */}
           <div className="relative">
             <label className="text-gray-300 text-sm">Location</label>
