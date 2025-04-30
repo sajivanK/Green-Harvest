@@ -1,6 +1,51 @@
 import workerModel from '../models/workerModel.js';
 import userModel from '../models/userModel.js';
+import nodemailer from 'nodemailer'; // for sending emails
 
+
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  auth: {
+    user: '8715a1001@smtp-brevo.com',  // your Brevo Email
+    pass: 'h1rQfWmH3naTk8wx'          // your Brevo SMTP Password
+  }
+});
+
+const generateWorkerSuccessEmail = (workerName, profileImageUrl) => `
+<html>
+<head>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f2f2f2; padding: 30px; }
+    .container { background-color: #ffffff; padding: 25px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+    .header { background-color: #2e7d32; padding: 20px; border-radius: 12px 12px 0 0; color: white; text-align: center; }
+    .profile-img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; margin: 20px auto; display: block; border: 3px solid #4CAF50; }
+    .content { font-size: 16px; color: #333; line-height: 1.6; }
+    .footer { margin-top: 30px; font-size: 13px; color: #888; text-align: center; }
+    .highlight { color: #4CAF50; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Welcome to GreenHarvest, ${workerName}!</h2>
+    </div>
+    <img src="${profileImageUrl}" alt="Profile Image" class="profile-img" />
+    <div class="content">
+      <p>Hi <strong>${workerName}</strong>,</p>
+      <p>We're excited to let you know that your <span class="highlight">worker profile</span> has been successfully created on <strong>GreenHarvest</strong>.</p>
+      <p>You can now start exploring opportunities, accept tasks, and contribute to a greener tomorrow!</p>
+      <p>If you have any questions, feel free to reach out to us.</p>
+      <p>Thank you for being a part of our mission.</p>
+    </div>
+    <div class="footer">
+      &copy; 2025 GreenHarvest | Connecting Farmers, Workers & Communities
+    </div>
+  </div>
+</body>
+</html>
+`;
 
 
 // Apply to become a worker
@@ -39,7 +84,20 @@ export const applyWorker = async (req, res) => {
         profileImage,
       });
   
+
       await worker.save();
+
+        const workerUser = await userModel.findById(worker.userId);
+            if (workerUser?.email) {
+              await transporter.sendMail({
+                from: 'jansteinsaji16@gmail.com',
+                to: workerUser.email,
+                subject: '📦 Worker created successfully',
+                html: generateWorkerSuccessEmail(workerUser.name, `${process.env.BASE_URL || 'http://localhost:4000'}${worker.profileImage}`)
+
+              });
+            }
+      
   
       // Add "Worker" role to user
       await userModel.findByIdAndUpdate(req.user.id, {
@@ -129,7 +187,7 @@ export const updateWorker = async (req, res) => {
         if (req.body.firstName || req.body.lastName) {
             worker.name = `${req.body.firstName || worker.name.split(" ")[0]} ${req.body.lastName || worker.name.split(" ")[1] || ''}`;
         }
-
+       
         worker.phone = req.body.phone || worker.phone;
         worker.location = req.body.city || worker.location;
         worker.bankName = req.body.bankName || worker.bankName;

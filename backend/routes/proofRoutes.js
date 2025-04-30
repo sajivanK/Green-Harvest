@@ -16,6 +16,9 @@ proofRouter.post(
     ]),
     uploadProof
   );
+
+
+  
 //localhost 4000/api/proof/upload-proof
 
 // Get all proofs uploaded by the logged-in worker
@@ -26,5 +29,8 @@ proofRouter.patch('/update-proof/:id', authenticate, upload.single('proofImage')
 
 // Delete a proof (Only worker can delete their own proof)
 proofRouter.delete('/delete-proof/:id', authenticate, deleteProof);
+
+
+
 
 export default proofRouter;
