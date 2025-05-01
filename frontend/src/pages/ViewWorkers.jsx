@@ -83,11 +83,22 @@ const ViewWorkers = () => {
             key={worker._id}
             className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} rounded-2xl shadow-lg p-6 hover:scale-105 transition-transform duration-300`}
           >
-            <img
+            {/* <img
               src={`http://localhost:4000${worker.profileImage}`}
               alt={worker.name}
               className="w-32 h-32 mx-auto rounded-full border-4 border-green-400 object-cover"
+            /> */}
+            <img
+              src={`http://localhost:4000${worker.profileImage || '/uploads/default-avatar.png'}`}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = `http://localhost:4000/uploads/default-avatar.png`;
+              }}
+              alt={worker.name}
+              className="w-32 h-32 mx-auto rounded-full border-4 border-green-400 object-cover"
             />
+
+
             <h2 className="text-xl font-bold text-center mt-4 text-green-400">{worker.name}</h2>
 
             <div className={`mt-4 text-sm space-y-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>

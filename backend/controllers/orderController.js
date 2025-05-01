@@ -290,3 +290,18 @@ export const getMonthlySalesOverview = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to fetch monthly sales" });
   }
 };
+
+
+// ✅ Get Orders for the logged-in Customer
+export const getCustomerOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ userId: req.user.id })
+      .populate("productId")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    console.error("Customer Order Fetch Error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

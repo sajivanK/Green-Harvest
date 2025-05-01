@@ -36,6 +36,7 @@ import MySubscriptions from './pages/MySubscriptions';
 import DeliveryInfoPage from './pages/DeliveryInfoPage';  // ✅
 import OrderSummary from './pages/OrderSummary'; 
 import OrderEditPage from './pages/OrderEditPage';
+import CustomerOrdersTable from './pages/CustomerOrdersTable';
 
 
 
@@ -96,7 +97,8 @@ function App() {
     '/profile',
     '/update-profile',
     '/cart',
-    '/my-subscriptions'
+    '/my-subscriptions',
+    '/my-orders'
     
 
   ];
@@ -152,6 +154,8 @@ function App() {
           <Route path="/delivery-info" element={<DeliveryInfoPage />} />
           <Route path="/summary" element={<OrderSummary />} /> 
           <Route path="/edit" element={<OrderEditPage />} /> 
+          <Route path="/my-orders" element={<CustomerOrdersTable />} />
+
 
 
 
