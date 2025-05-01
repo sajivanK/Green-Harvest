@@ -33,6 +33,7 @@ const SIDEBAR_ITEMS = [
   { name: "Contact us", icon: Phone, color: "#9532a8", href: "/contactus" },
   { name: "Shoppingcart", icon: ShoppingCart, color: "#de078f", href: "/cart" },
   { name: "My-subscriptions", icon: ShoppingBag, color: "#F59E0B", href: "/my-subscriptions" },
+  { name: "My-Orders", icon: CatIcon, color: "#9532a8", href: "/my-orders" },
   { name: "Apply Farmer", icon: Users, color: "#11de07", href: "/register-farmer" },
   { name: "Apply Worker", icon: User2Icon, color: "#de078f", href: "/signup" },
 ];
