@@ -1,4 +1,6 @@
 
+
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosApi from '../config/axiosConfig';
@@ -13,6 +15,7 @@ const RegisterPage = () => {
     address: '',
   });
 
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,15 +46,22 @@ const RegisterPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+    setErrors({ ...errors, [name]: "" }); // clear error when user types
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (form.name.trim().length < 2) newErrors.name = "Name must be at least 2 characters.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = "Invalid email address.";
+    if (form.password.length < 6) newErrors.password = "Password must be at least 6 characters.";
+    if (!form.address.trim()) newErrors.address = "Address is required.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    if (form.name.length < 2) return toast.error("Name must be at least 2 characters");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return toast.error("Invalid email address");
-    if (form.password.length < 6) return toast.error("Password must be at least 6 characters");
-    if (form.address.trim() === '') return toast.error("Address is required");
+    if (!validateForm()) return;
 
     try {
       const response = await axiosApi.post('/api/auth/register', form, { withCredentials: true });
@@ -74,59 +84,67 @@ const RegisterPage = () => {
         <p className='text-center text-sm text-[#e2eeeb] mb-6'>Register to access the platform</p>
 
         <form onSubmit={handleRegister}>
-          <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]">
-            <img src={assets.person_icon} alt="" />
-            <input
-              name="name"
-              onChange={handleChange}
-              value={form.name}
-              className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
-              type="text"
-              placeholder='Full Name'
-              required
-            />
+          <div className="mb-1">
+            <div className="flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]">
+              <img src={assets.person_icon} alt="" />
+              <input
+                name="name"
+                onChange={handleChange}
+                value={form.name}
+                className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
+                type="text"
+                placeholder='Full Name'
+              />
+            </div>
+            {errors.name && <p className="text-red-400 text-xs mt-1 ml-3">{errors.name}</p>}
           </div>
 
-          <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]'>
-            <img src={assets.mail_icon} alt="" />
-            <input
-              name="email"
-              onChange={handleChange}
-              value={form.email}
-              className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
-              type="email"
-              placeholder='Email'
-              required
-            />
+          <div className="mb-1">
+            <div className="flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]">
+              <img src={assets.mail_icon} alt="" />
+              <input
+                name="email"
+                onChange={handleChange}
+                value={form.email}
+                className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
+                type="email"
+                placeholder='Email'
+              />
+            </div>
+            {errors.email && <p className="text-red-400 text-xs mt-1 ml-3">{errors.email}</p>}
           </div>
 
-          <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]'>
-            <img src={assets.lock_icon} alt="" />
-            <input
-              name="password"
-              onChange={handleChange}
-              value={form.password}
-              className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
-              type="password"
-              placeholder='Password'
-              required
-            />
+          <div className="mb-1">
+            <div className="flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]">
+              <img src={assets.lock_icon} alt="" />
+              <input
+                name="password"
+                onChange={handleChange}
+                value={form.password}
+                className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
+                type="password"
+                placeholder='Password'
+              />
+            </div>
+            {errors.password && <p className="text-red-400 text-xs mt-1 ml-3">{errors.password}</p>}
           </div>
 
-          <div className='mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]'>
-            <img src={assets.location_icon || assets.person_icon} alt="" />
-            <input
-              name="address"
-              onChange={handleChange}
-              value={form.address}
-              className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
-              type="text"
-              placeholder='Address'
-              required
-            />
+          <div className="mb-1">
+            <div className="flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#115a4b]">
+              <img src={assets.location_icon || assets.person_icon} alt="" />
+              <input
+                name="address"
+                onChange={handleChange}
+                value={form.address}
+                className='bg-transparent outline-none text-white placeholder:text-indigo-200 w-full'
+                type="text"
+                placeholder='Address'
+              />
+            </div>
+            {errors.address && <p className="text-red-400 text-xs mt-1 ml-3">{errors.address}</p>}
           </div>
 
-          <button className="w-full py-2.5 rounded-full bg-[#092f2c] text-white font-bold mt-2">
+          <button className="w-full py-2.5 rounded-full bg-[#092f2c] text-white font-bold mt-3">
             Register
           </button>
         </form>

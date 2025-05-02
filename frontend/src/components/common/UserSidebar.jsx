@@ -30,7 +30,7 @@ import axiosApi from '../../config/axiosConfig';
 const SIDEBAR_ITEMS = [
   { name: "Home", icon: HomeIcon, color: "#11de07", href: "/" },
   { name: "Update profile", icon: Contact2Icon, color: "#F59E0B", href: "/update-profile" },
-  { name: "Contact us", icon: Phone, color: "#9532a8", href: "/contactus" },
+  //{ name: "Contact us", icon: Phone, color: "#9532a8", href: "/contactus" },
   { name: "Shoppingcart", icon: ShoppingCart, color: "#de078f", href: "/cart" },
   { name: "My-subscriptions", icon: ShoppingBag, color: "#F59E0B", href: "/my-subscriptions" },
   { name: "My-Orders", icon: CatIcon, color: "#9532a8", href: "/my-orders" },

@@ -9,24 +9,24 @@ export const updateUserProfile = async (req, res) => {
     const user = await userModel.findById(req.user.id);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
-    // 🧹 Delete old avatar if new one uploaded
+    //  Delete old avatar if new one uploaded
     if (avatar && user.avatar) {
       fs.unlink(`uploads/${user.avatar}`, (err) => {
         if (err) console.error('Failed to delete old avatar:', err);
       });
     }
 
-    // ✅ Compose and update full name
+    //  Compose and update full name
     const finalFirst = firstName || user.name?.split(' ')[0] || '';
     const finalLast = lastName || user.name?.split(' ').slice(1).join(' ') || '';
     user.name = `${finalFirst} ${finalLast}`.trim();
 
-    // ✅ Update address
+    //  Update address
     if (house || street || city) {
       user.address = `${house || ''},${street || ''},${city || ''}`.trim();
     }
 
-    // ✅ Update avatar if uploaded
+    //  Update avatar if uploaded
     if (avatar) {
       user.avatar = avatar;
     }
@@ -35,14 +35,14 @@ export const updateUserProfile = async (req, res) => {
 
     return res.status(200).json({ success: true, message: 'User profile updated successfully', user });
   } catch (error) {
-    console.error('❌ Error updating profile:', error);
+    console.error(' Error updating profile:', error);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 
 
-// ✅ Get user profile by token
+//  Get user profile by token
 export const getUserProfile = async (req, res) => {
   try {
     const user = await userModel.findById(req.user.id);
@@ -52,7 +52,7 @@ export const getUserProfile = async (req, res) => {
 
     res.status(200).json({ success: true, user });
   } catch (error) {
-    console.error("❌ Error fetching user profile:", error);
+    console.error(" Error fetching user profile:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

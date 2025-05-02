@@ -203,6 +203,7 @@ const SubscriptionPayment = () => {
               value={paymentInfo.cvv}
               onChange={handlePaymentChange}
               placeholder="CVV"
+              type="password"
               maxLength={3}
               className={`w-1/2 border rounded p-2 ${
                 errors.cvv ? "border-red-500" : "border-gray-300"

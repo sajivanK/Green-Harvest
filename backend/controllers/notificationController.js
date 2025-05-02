@@ -1,7 +1,7 @@
 // backend/controllers/notificationController.js
 import notificationModel from "../models/notificationModel.js";
 
-// ✅ Get all notifications for the logged-in farmer
+// Get all notifications for the logged-in farmer
 export const getNotifications = async (req, res) => {
   try {
     const farmerId = req.user._id; // from authMiddleware
@@ -15,7 +15,7 @@ export const getNotifications = async (req, res) => {
   }
 };
 
-// ✅ Mark all as read
+// Mark all as read
 export const markAllAsRead = async (req, res) => {
   try {
     const farmerId = req.user._id;
@@ -27,7 +27,7 @@ export const markAllAsRead = async (req, res) => {
   }
 };
 
-// ✅ Delete all notifications
+//  Delete all notifications
 export const clearNotifications = async (req, res) => {
   try {
     const farmerId = req.user._id;

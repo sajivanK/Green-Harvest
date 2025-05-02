@@ -5,7 +5,7 @@ import farmerModel from '../models/farmerModel.js';
 import userModel from '../models/userModel.js';
 import nodemailer from 'nodemailer';
 
-// 🔐 Setup Brevo Email Transporter
+//  Setup Brevo Email Transporter
 const transporter = nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
   port: 587,
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// 🧠 Utility to calculate expiry date
+//  Utility to calculate expiry date
 const getExpiryDate = (duration) => {
   const now = new Date();
   if (duration === 'Weekly') now.setDate(now.getDate() + 7);
@@ -24,7 +24,7 @@ const getExpiryDate = (duration) => {
   return now;
 };
 
-// 📬 Styled Email Templates
+//  Styled Email Templates
 const generateCustomerEmail = (customerName, pkg, deliveryInfo, deliveryFee) => `
 <html>
 <head>
@@ -109,7 +109,7 @@ const generateFarmerEmail = (farmerName, pkg, deliveryInfo) => `
 </html>
 `;
 
-// ✅ Create a new subscription
+//  Create a new subscription
 export const createSubscription = async (req, res) => {
   const { packageId, deliveryInfo } = req.body;
   const userId = req.user._id;
@@ -141,7 +141,7 @@ export const createSubscription = async (req, res) => {
     const user = await userModel.findById(userId);
     const farmer = await farmerModel.findById(farmerId).populate('userId');
 
-    // ✅ Customer Email
+    //  Customer Email
     if (user?.email) {
       await transporter.sendMail({
         from: 'jansteinsaji16@gmail.com',
@@ -161,7 +161,7 @@ export const createSubscription = async (req, res) => {
       });
     }
 
-    // ✅ Farmer Email
+    //  Farmer Email
     if (farmer?.userId?.email) {
       await transporter.sendMail({
         from: 'jansteinsaji16@gmail.com',
@@ -183,12 +183,12 @@ export const createSubscription = async (req, res) => {
     res.status(201).json({ success: true, message: "Subscription created", subscription: newSubscription });
 
   } catch (error) {
-    console.error("❌ Subscription error:", error);
+    console.error(" Subscription error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-// ✅ Get customer subscriptions
+//  Get customer subscriptions
 export const getMySubscriptions = async (req, res) => {
   try {
     const subscriptions = await subscriptionModel.find({ userId: req.user._id });
@@ -198,7 +198,7 @@ export const getMySubscriptions = async (req, res) => {
   }
 };
 
-// ✅ Auto-expire subscriptions
+//  Auto-expire subscriptions
 export const checkAndExpireSubscriptions = async (req, res) => {
   try {
     const now = new Date();
@@ -213,7 +213,7 @@ export const checkAndExpireSubscriptions = async (req, res) => {
 };
 
 
-// ✅ Get all subscriptions for the logged-in farmer
+//  Get all subscriptions for the logged-in farmer
 export const getFarmerSubscriptions = async (req, res) => {
     try {
       const farmer = await farmerModel.findOne({ userId: req.user.id });
@@ -259,7 +259,7 @@ export const getFarmerSubscriptions = async (req, res) => {
         },
       });
     } catch (error) {
-      console.error("❌ Failed to fetch subscription stats:", error);
+      console.error(" Failed to fetch subscription stats:", error);
       res.status(500).json({ success: false, message: "Server error" });
     }
   };

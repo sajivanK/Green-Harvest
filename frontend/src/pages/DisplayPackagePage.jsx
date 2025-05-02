@@ -81,7 +81,19 @@ const DisplayPackagePage = () => {
                         <p className="text-gray-400">Duration: {pkg.duration}</p>
                         <p className="text-gray-400">Delivery Frequency: {pkg.deliveryFrequency}</p>
 
-                        {/* ✅ Subscribe Button updated */}
+                        <div className="mt-2 text-sm text-gray-300">
+                            <p className="font-semibold underline mb-1">Products Included:</p>
+                            <ul className="list-disc list-inside space-y-1">
+                                {pkg.products?.map((product, index) => (
+                                <li key={index}>
+                                    {product.productName} – {product.quantity} kg
+                                </li>
+                                ))}
+                            </ul>
+                        </div>
+
+
+                        {/* Subscribe Button updated */}
                         <button
                             onClick={() => handleSubscribe(pkg)}
                             className="w-full mt-4 bg-green-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold transition duration-300"

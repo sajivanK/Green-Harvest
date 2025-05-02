@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
 
 export const authenticate = async (req, res, next) => {
-    console.log('Cookies:', req.cookies); // ✅ Debugging token presence
+    console.log('Cookies:', req.cookies); //  Debugging token presence
 
-    const token = req.cookies?.token;  // ✅ Ensure cookies exist before accessing
+    const token = req.cookies?.token;  //  Ensure cookies exist before accessing
 
     if (!token) {
         return res.status(401).json({ success: false, message: 'Unauthorized. No token provided.' });

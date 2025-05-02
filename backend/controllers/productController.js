@@ -3,7 +3,7 @@ import productModel from '../models/productModel.js';
 import farmerModel from '../models/farmerModel.js';
 import fs from 'fs';
 
-// ✅ Create a new product
+//  Create a new product
 export const createProduct = async (req, res) => {
     const { name, category, price, stock, description } = req.body;
     const image = req.file ? req.file.filename : '';
@@ -36,7 +36,7 @@ export const createProduct = async (req, res) => {
     }
 };
 
-// ✅ Update an existing product
+//  Update an existing product
 export const updateProduct = async (req, res) => {
     const { productId } = req.params;
     const { name, category, price, stock, description, qrCode } = req.body;
@@ -84,7 +84,7 @@ export const updateProduct = async (req, res) => {
     }
 };
 
-// ✅ Delete a product
+//  Delete a product
 export const deleteProduct = async (req, res) => {
     const { productId } = req.params;
 
@@ -120,8 +120,7 @@ export const deleteProduct = async (req, res) => {
     }
 };
 
-// ✅ Get all products of the logged-in farmer
-// ✅ Get all products of the logged-in farmer
+//  Get all products of the logged-in farmer
 export const getMyProducts = async (req, res) => {
     try {
         const farmer = await farmerModel.findOne({ userId: req.user.id });
@@ -138,7 +137,7 @@ export const getMyProducts = async (req, res) => {
 };
 
 
-// ✅ Get all products
+//  Get all products
 export const getAllProducts = async (req, res) => {
     try {
         const products = await productModel.find();
@@ -148,7 +147,7 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
-// ✅ Get category distribution
+//  Get category distribution
 export const getCategoryDistribution = async (req, res) => {
     try {
         const categoryData = await productModel.aggregate([
@@ -169,7 +168,7 @@ export const getCategoryDistribution = async (req, res) => {
     }
 };
 
-// ✅ Get single product by ID
+//  Get single product by ID
 export const getSingleProduct = async (req, res) => {
     try {
         const product = await productModel.findById(req.params.id);

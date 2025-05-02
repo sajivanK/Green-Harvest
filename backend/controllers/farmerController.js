@@ -1,38 +1,6 @@
 import farmerModel from '../models/farmerModel.js';
 import userModel from '../models/userModel.js';
 import fs from 'fs';
-// Apply to become a farmer
-// export const applyFarmer = async (req, res) => {
-//     const { farmName, farmLocation, contactNumber, nicNumber } = req.body;
-
-//     try {
-//         const user = await userModel.findById(req.user.id);
-//         if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-
-//         const existingFarmer = await farmerModel.findOne({ userId: req.user.id });
-//         if (existingFarmer) return res.status(400).json({ success: false, message: 'Already registered as a farmer' });
-
-//         const existingNIC = await farmerModel.findOne({ nicNumber });
-//         if (existingNIC) return res.status(400).json({ success: false, message: 'NIC number already exists' });
-
-//         // ✅ Extract profile image filename
-//         const profileImage = req.file ? req.file.filename : '';
-
-//         const farmer = new farmerModel({
-//             userId: user._id,
-//             farmName,
-//             farmLocation,
-//             contactNumber,
-//             nicNumber,
-//             profileImage,
-//         });
-
-//         await farmer.save();
-//         res.status(201).json({ success: true, farmer });
-//     } catch (error) {
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// };
 
 // Apply to become a farmer
 export const applyFarmer = async (req, res) => {
@@ -48,7 +16,7 @@ export const applyFarmer = async (req, res) => {
         const existingNIC = await farmerModel.findOne({ nicNumber });
         if (existingNIC) return res.status(400).json({ success: false, message: 'NIC number already exists' });
 
-        // ✅ Extract profile image filename
+        // Extract profile image filename
         const profileImage = req.file ? req.file.filename : '';
 
         const farmer = new farmerModel({
@@ -62,7 +30,7 @@ export const applyFarmer = async (req, res) => {
 
         await farmer.save();
 
-        // ✅ Add "Farmer" role to the user
+        // Add "Farmer" role to the user
         await userModel.findByIdAndUpdate(req.user.id, {
             $addToSet: { roles: 'Farmer' }
         });
@@ -85,7 +53,7 @@ export const updateFarmer = async (req, res) => {
         const farmer = await farmerModel.findOne({ userId: req.user.id });
         if (!farmer) return res.status(404).json({ success: false, message: 'Farmer profile not found' });
 
-        // ✅ Delete old profile image if a new one is uploaded
+        // Delete old profile image if a new one is uploaded
         if (profileImage && farmer.profileImage) {
             fs.unlink(`uploads/${farmer.profileImage}`, (err) => {
                 if (err) console.error('Failed to delete image:', err);
@@ -125,7 +93,7 @@ export const deleteFarmer = async (req, res) => {
     }
 };
 
-// ✅ Fetch Farmer Profile
+// Fetch Farmer Profile
 export const getFarmerProfile = async (req, res) => {
     try {
         // Find the farmer profile
@@ -140,7 +108,7 @@ export const getFarmerProfile = async (req, res) => {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // ✅ Send both farmer and user data
+        //Send both farmer and user data
         res.json({ success: true, farmer: { ...farmer.toObject(), email: user.email } });
     } catch (error) {
         console.error("⚠️ Error fetching farmer profile:", error);

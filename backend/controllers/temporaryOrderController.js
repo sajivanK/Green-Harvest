@@ -16,9 +16,66 @@ const transporter = nodemailer.createTransport({
 });
 
 // Email Templates
-const generateFarmerEmail = (farmerName, productName, quantity, total, deliveryInfo) => `...`;
-const generateCustomerEmail = (customerName, items, totalAmount, deliveryInfo) => `...`;
-
+// FARMER Email Template
+const generateFarmerEmail = (farmerName, productName, quantity, total, deliveryInfo) => `
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    .container { background: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; }
+    .header { background: #4CAF50; padding: 15px; color: #fff; border-radius: 10px 10px 0 0; text-align: center; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 5px 0; }
+    .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><h2>New Order Received - GreenHarvest</h2></div>
+    <p>Hi ${farmerName},</p>
+    <p>You have a new order for <b>${productName}</b>.</p>
+    <ul>
+      <li><b>Quantity:</b> ${quantity}</li>
+      <li><b>Total:</b> Rs.${total}</li>
+      <li><b>Customer:</b> ${deliveryInfo.firstName} ${deliveryInfo.lastName}</li>
+      <li><b>Address:</b> ${deliveryInfo.address}</li>
+      <li><b>Phone:</b> ${deliveryInfo.phone}</li>
+    </ul>
+    <p>Check your GreenHarvest Dashboard for details.</p>
+    <div class="footer">&copy; 2025 GreenHarvest</div>
+  </div>
+</body>
+</html>
+`;
+// CUSTOMER Email Template
+const generateCustomerEmail = (customerName, items, totalAmount, deliveryInfo) => `
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    .container { background: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; }
+    .header { background: #4CAF50; padding: 15px; color: #fff; border-radius: 10px 10px 0 0; text-align: center; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 5px 0; }
+    .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><h2>Order Confirmation - GreenHarvest</h2></div>
+    <p>Hi ${customerName},</p>
+    <p>Your order has been placed successfully!</p>
+    <ul>
+      ${items.map(item => `<li>${item.productName} - Qty: ${item.quantity} - Rs.${item.total}</li>`).join('')}
+    </ul>
+    <p><b>Total Paid:</b> Rs.${totalAmount}</p>
+    <p>Delivery To: ${deliveryInfo.firstName} ${deliveryInfo.lastName}, ${deliveryInfo.address}, ${deliveryInfo.phone}</p>
+    <p>Thank you for shopping with GreenHarvest!</p>
+    <div class="footer">&copy; 2025 GreenHarvest</div>
+  </div>
+</body>
+</html>
+`;
 // 1. Create Temporary Orders (No stock update or email)
 export const createTemporaryOrder = async (req, res) => {
   const userId = req.user._id;

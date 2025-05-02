@@ -4,20 +4,20 @@ import packageModel from '../models/packageModel.js';
 import farmerModel from '../models/farmerModel.js';
 import fs from 'fs';
 
-// ✅ Create a new package
+//Create a new package
 export const createPackage = async (req, res) => {
     try {
         const { packageName, description, price, duration, deliveryFrequency, products } = req.body;
         const imagePath = req.file ? req.file.filename : '';
 
-        // ✅ Fetch the farmer linked to the logged-in user
+        // Fetch the farmer linked to the logged-in user
         const farmer = await farmerModel.findOne({ userId: req.user.id });
         if (!farmer) {
             return res.status(400).json({ success: false, message: 'Farmer not found for the logged-in user.' });
         }
 
         const newPackage = new packageModel({
-            farmerId: farmer._id, // ✅ Correct farmer._id
+            farmerId: farmer._id, 
             packageName,
             description,
             image: imagePath,
@@ -34,7 +34,7 @@ export const createPackage = async (req, res) => {
     }
 };
 
-// ✅ Get all packages belonging to the logged-in farmer
+// Get all packages belonging to the logged-in farmer
 export const getPackages = async (req, res) => {
     try {
         const farmer = await farmerModel.findOne({ userId: req.user.id });
@@ -49,7 +49,7 @@ export const getPackages = async (req, res) => {
     }
 };
 
-// ✅ Get all packages in the database (for public viewing)
+// Get all packages in the database (for public viewing)
 export const getAllPackages = async (req, res) => {
     try {
         const packages = await packageModel.find();
@@ -59,25 +59,25 @@ export const getAllPackages = async (req, res) => {
     }
 };
 
-// ✅ Update a package
+//  Update a package
 export const updatePackage = async (req, res) => {
     try {
         const { id } = req.params;
         let updateData = req.body;
 
-        // ✅ Parse products if coming as string
+        //Parse products if coming as string
         if (typeof updateData.products === "string") {
             updateData.products = JSON.parse(updateData.products);
         }
 
-        // ✅ Only update image if new one uploaded
+        // Only update image if new one uploaded
         if (req.file) {
             updateData.image = req.file.filename;
         } else {
             delete updateData.image;
         }
 
-        // ✅ Find farmer from logged-in user
+        // Find farmer from logged-in user
         const farmer = await farmerModel.findOne({ userId: req.user.id });
         if (!farmer) {
             return res.status(400).json({ success: false, message: 'Farmer not found for the logged-in user.' });
@@ -100,12 +100,12 @@ export const updatePackage = async (req, res) => {
     }
 };
 
-// ✅ Delete a package
+// Delete a package
 export const deletePackage = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // ✅ Find farmer from logged-in user
+        // Find farmer from logged-in user
         const farmer = await farmerModel.findOne({ userId: req.user.id });
         if (!farmer) {
             return res.status(400).json({ success: false, message: 'Farmer not found for the logged-in user.' });
@@ -117,7 +117,7 @@ export const deletePackage = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Package not found or unauthorized' });
         }
 
-        // ✅ Delete image from uploads folder if it exists
+        // Delete image from uploads folder if it exists
         if (packageToDelete.image) {
             fs.unlink(`uploads/${packageToDelete.image}`, (err) => {
                 if (err) console.error('Failed to delete image:', err);

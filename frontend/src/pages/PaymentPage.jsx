@@ -57,6 +57,31 @@ const PaymentPage = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
+  //new
+  const validateExpiryDate = (expiry) => {
+    const [month, year] = expiry.split("/").map(Number);
+  
+    // Basic checks
+    if (!month || !year || month < 1 || month > 12) return false;
+  
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear(); // e.g., 2025
+  
+    // Convert 2-digit year to full year
+    const inputYear = 2000 + year; // 25 → 2025
+    const inputMonth = month;
+  
+    // Compare year and month
+    if (inputYear < currentYear) return false;
+    if (inputYear === currentYear && inputMonth < currentMonth) return false;
+  
+    return true;
+  };
+  
+  
+  
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -71,7 +96,15 @@ const PaymentPage = () => {
 
     if (!payment.cardName.trim() || payment.cardName.length < 3) newErrors.cardName = "Cardholder name is required";
     if (!/^\d{4} \d{4} \d{4} \d{4}$/.test(payment.cardNumber)) newErrors.cardNumber = "Card number must be 16 digits";
-    if (!/^(0[1-9]|1[0-2])\/(\d{2})$/.test(payment.expiry)) newErrors.expiry = "Expiry must be in MM/YY format";
+    //if (!/^(0[1-9]|1[0-2])\/(\d{2})$/.test(payment.expiry)) newErrors.expiry = "Expiry must be in MM/YY format";
+    
+    if (!/^(0[1-9]|1[0-2])\/(\d{2})$/.test(payment.expiry)) {
+      newErrors.expiry = "Expiry must be in MM/YY format";
+    } else if (!validateExpiryDate(payment.expiry)) {
+      newErrors.expiry = "Card has expired";
+    }
+    
+    
     if (!/^[0-9]{3}$/.test(payment.cvv)) newErrors.cvv = "CVV must be 3 digits";
 
     setErrors(newErrors);
@@ -90,19 +123,6 @@ const PaymentPage = () => {
         },
         { withCredentials: true }
       );
-
-      // const url = state?.from === "buyNow"
-      //   ? "/api/payment/checkout"  // for single payment
-      //   : "/api/checkout/cart";    // for cart payment
-
-      // const res = await axiosApi.post(
-      //   url,
-      //   {
-      //     items,
-      //     deliveryInfo: form,
-      //   },
-      //   { withCredentials: true }
-      // );
 
 
       if (res.status === 200) {

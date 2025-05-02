@@ -108,7 +108,7 @@ export const logout = async (req, res) =>{
     }
 }
 
-// Add this function to authController.js
+
 export const checkAuth = async (req, res) => {
     try {
         const token = req.cookies.token;

@@ -3,7 +3,7 @@
 import Order from "../models/orderModel.js";
 import Farmer from "../models/farmerModel.js";
 
-// ✅ Get Orders for the logged-in Farmer
+//  Get Orders for the logged-in Farmer
 export const getMyOrders = async (req, res) => {
   try {
     const farmer = await Farmer.findOne({ userId: req.user.id });
@@ -13,7 +13,7 @@ export const getMyOrders = async (req, res) => {
     }
 
     const orders = await Order.find({ farmerId: farmer._id })
-      .populate("productId")   // ✅ Populate product details
+      .populate("productId")   
       .sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, orders });
@@ -86,7 +86,7 @@ export const getOrderStatusDistribution = async (req, res) => {
     }
   };
 
-  import mongoose from "mongoose"; // Make sure mongoose is imported if not already
+  import mongoose from "mongoose"; 
 
 export const getDailyOrders = async (req, res) => {
   try {
@@ -286,7 +286,7 @@ export const getMonthlySalesOverview = async (req, res) => {
     res.status(200).json({ success: true, monthlySales });
 
   } catch (error) {
-    console.error("❌ Monthly sales fetch error:", error);
+    console.error(" Monthly sales fetch error:", error);
     res.status(500).json({ success: false, message: "Failed to fetch monthly sales" });
   }
 };
