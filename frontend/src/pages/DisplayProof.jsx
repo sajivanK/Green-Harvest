@@ -215,8 +215,8 @@ const DisplayProof = () => {
             <thead className="bg-gray-700 text-gray-300">
               <tr>
                 <th className="py-3 px-4 text-left">Proof ID</th>
-                <th className="py-3 px-4 text-left">Before Image</th>
                 <th className="py-3 px-4 text-left">After Image</th>
+                <th className="py-3 px-4 text-left">Before Image</th>
                 <th className="py-3 px-4 text-left">Location</th>
                 <th className="py-3 px-4 text-left">Phone</th>
                 <th className="py-3 px-4 text-left">Email</th>
