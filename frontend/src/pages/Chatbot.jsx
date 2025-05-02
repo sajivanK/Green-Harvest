@@ -8,18 +8,18 @@ const ChatBot = () => {
     const [loading, setLoading] = useState(false);
     const [listening, setListening] = useState(false);
     const [userId, setUserId] = useState(null);
-    const [isSpeaking, setIsSpeaking] = useState(false); // ✅ Track speaking state
-    const speechRef = useRef(null); // ✅ Store the speech utterance
+    const [isSpeaking, setIsSpeaking] = useState(false); //  Track speaking state
+    const speechRef = useRef(null); // Store the speech utterance
 
-    // ✅ Voice Input (Speech-to-Text)
+    //Voice Input (Speech-to-Text)
     const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
 
-    // ✅ Function to remove HTML tags from AI response
+    //Function to remove HTML tags from AI response
     const stripHTML = (text) => {
         return text.replace(/<\/?[^>]+(>|$)/g, "");
     };
 
-    // ✅ Fetch User ID on Load
+    //Fetch User ID on Load
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -39,23 +39,23 @@ const ChatBot = () => {
         fetchUserData();
     }, []);
 
-    // ✅ Fetch Chat History
+    //Fetch Chat History
     const fetchChatHistory = async () => {
         try {
             const response = await axiosApi.get("/api/chatbot/history", { withCredentials: true });
 
             if (response.data.success) {
-                console.log("✅ Chat History Loaded:", response.data.chats);
+                console.log("Chat History Loaded:", response.data.chats);
                 setMessages(response.data.chats);
             } else {
-                console.error("⚠️ Failed to fetch chat history:", response.data.message);
+                console.error("Failed to fetch chat history:", response.data.message);
             }
         } catch (error) {
-            console.error("⚠️ Error fetching chat history:", error);
+            console.error("Error fetching chat history:", error);
         }
     };
 
-    // ✅ Send Message to AI
+    //Send Message to AI
     const sendMessage = async () => {
         if (!message.trim()) return;
         if (!userId) {
@@ -74,12 +74,12 @@ const ChatBot = () => {
             );
 
             if (response.data.success) {
-                console.log("✅ AI Response:", response.data.reply);
+                console.log("AI Response:", response.data.reply);
                 let reply = stripHTML(response.data.reply);
 
                 setMessages((prev) => [...prev.slice(0, -1), { message, reply }]);
 
-                // ✅ Read AI response aloud
+                // Read AI response aloud
                 speakText(reply);
             }
         } catch (error) {
@@ -90,48 +90,28 @@ const ChatBot = () => {
         setLoading(false);
     };
 
-    // ✅ Reset Chat
+    //Reset Chat
     const resetChat = async () => {
         try {
             await axiosApi.delete("/api/chatbot/history", { withCredentials: true });
             setMessages([]);
-            console.log("✅ Chat history cleared.");
+            console.log(" Chat history cleared.");
         } catch (error) {
-            console.error("⚠️ Error clearing chat history:", error);
+            console.error(" Error clearing chat history:", error);
         }
     };
 
-    // ✅ Voice Output (Text-to-Speech)
-    // const speakText = (text) => {
-    //     if ("speechSynthesis" in window) {
-    //         window.speechSynthesis.cancel(); // Cancel any previous speech
-
-    //         const utterance = new SpeechSynthesisUtterance(text);
-    //         utterance.lang = "en-IN";
-    //         utterance.rate = 0.8;
-    //         utterance.volume = 1;
-
-    //         utterance.onstart = () => setIsSpeaking(true);
-    //         utterance.onend = () => setIsSpeaking(false);
-    //         utterance.onerror = () => setIsSpeaking(false);
-
-    //         speechRef.current = utterance;
-    //         window.speechSynthesis.speak(utterance);
-    //     } else {
-    //         console.error("❌ Speech synthesis not supported in this browser.");
-    //     }
-    // };
 
     const speakText = (text) => {
         if ("speechSynthesis" in window) {
             window.speechSynthesis.cancel();
     
-            // ✅ Detect if the text is Tamil
+            //Detect if the text is Tamil
             const isTamil = /[\u0B80-\u0BFF]/.test(text);
     
             if (isTamil) {
-                console.log("🛑 Tamil detected. Skipping voice output. Showing text only.");
-                return; // ❗ Don't speak Tamil text
+                console.log("Tamil detected. Skipping voice output. Showing text only.");
+                return; //Don't speak Tamil text
             }
     
             const utterance = new SpeechSynthesisUtterance(text);
@@ -146,14 +126,14 @@ const ChatBot = () => {
             speechRef.current = utterance;
             window.speechSynthesis.speak(utterance);
         } else {
-            console.error("❌ Speech synthesis not supported in this browser.");
+            console.error("Speech synthesis not supported in this browser.");
         }
     };
     
     
     
 
-    // ✅ Stop Voice Output
+    //Stop Voice Output
     const stopSpeaking = () => {
         if ("speechSynthesis" in window) {
             window.speechSynthesis.cancel();
@@ -161,7 +141,7 @@ const ChatBot = () => {
         }
     };
 
-    // ✅ Toggle Voice Input
+    //Toggle Voice Input
     const toggleListening = () => {
         if (!browserSupportsSpeechRecognition) {
             alert("⚠️ Speech recognition is not supported in your browser.");
@@ -212,17 +192,17 @@ const ChatBot = () => {
 
                 <div className="flex justify-between mt-2 flex-wrap gap-2">
                     <button onClick={toggleListening} className="p-2 bg-blue-500 text-white rounded-lg">
-                        {listening ? "Stop Listening" : "🎤 Speak"}
+                        {listening ? "Stop Listening" : "Speak"}
                     </button>
                     <button onClick={resetTranscript} className="p-2 bg-yellow-500 text-white rounded-lg">
                         Reset Voice
                     </button>
                     <button onClick={resetChat} className="p-2 bg-red-500 text-white rounded-lg">
-                        🗑️ Reset Chat
+                        Reset Chat
                     </button>
                     {isSpeaking && (
                         <button onClick={stopSpeaking} className="p-2 bg-purple-600 text-white rounded-lg">
-                            🔇 Stop Voice
+                            Stop Voice
                         </button>
                     )}
                 </div>
