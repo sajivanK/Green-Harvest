@@ -1,50 +1,82 @@
-# GreenHarvest
-GreenHarvest - Local Farmer Marketplace &amp; Waste Management System (MERN Stack)
-🌿 GreenHarvest – Local Farmer Marketplace & Waste Management System
-GreenHarvest is an innovative web-based platform designed to empower local farmers and simplify waste management services. Built using the MERN stack (MongoDB, Express.js, React.js, Node.js), GreenHarvest bridges the gap between farmers and consumers while integrating sustainable waste management solutions.
+# 🌱 GreenHarvest – Food & Waste Management Solutions
 
-## 🚀 Features
-### 🌾 Farmer Management
-- Farmer Registration & Verification: Farmers can register and submit certification documents for verification.
-- Profile Management: Manage farm details, certifications, and profile information.
-- Subscription Model: Enable weekly or monthly subscriptions for produce delivery.
+## 📖 Project Overview
+**GreenHarvest** is an integrated digital platform designed to address two major challenges:  
+1. Supporting **local agriculture** by connecting farmers directly with consumers.  
+2. Promoting **sustainability** through a smart waste management system.  
 
-### 🥬 Product Management
-- Product Listing & Management: Add, update, and delete farm products with detailed information.
-- Stock Management: Get alerts for low-stock products.
-- QR Code Generation: Automatically generate QR codes for product traceability.
-### 🔒 User Management
-- User Registration & Login: Secure registration and login with JWT authentication.
-- Profile Management: Users can update profile information and manage their accounts.
-- Cart Management: Users can manage their shopping cart and add/remove products.
-- Role-Based Access Control: Differentiate access for admins, farmers, and consumers.
-### 🛒 Order & Delivery Management
-- Real-time Order Tracking: Track orders from placement to delivery.
-- Scheduled Pickup & Delivery: Consumers can choose convenient pickup or delivery options.
-- Notifications: Real-time alerts for order updates and delivery status.
-### ♻️ Waste Management System
-- Waste Request Submission: Users can submit requests for waste collection (home or agricultural).
-- Collector Management: Waste collectors can view, accept, and manage collection tasks.
-- Analytics & Reports: Track waste management statistics and efficiency.
-### 💳 Payment Management
-- Multiple Payment Methods: Integration with Stripe, PayPal, and Cash on Delivery (COD).
-- Transaction History: View all past transactions and order histories.
-- Refund Processing: Manage refunds for canceled or disputed orders.
-### 📊 Reports & Analytics
-- Sales Insights: Generate detailed reports on product sales and trends.
-- Waste Management Analytics: Analyze waste collection data for better planning.
+By combining an **e-marketplace** for farmers with an **IoT-enabled waste management system**, GreenHarvest empowers communities to access fresh produce, reduce middlemen costs, and ensure cleaner cities and villages.  
 
-## 🛠️ Tech Stack
-- Frontend: React.js, Vite, Tailwind CSS
-- Backend: Node.js, Express.js
-- Database: MongoDB, Mongoose ORM
-- Payment Integration: Stripe, PayPal
-- Notifications: Twilio (SMS), SendGrid (Email)
-- Hosting: AWS, Vercel
+The project was developed as part of the **ITP (Information Technology Project)** at the **Sri Lanka Institute of Information Technology (SLIIT)**, following MERN stack development principles with a light-themed, user-friendly design.  
 
- ## 🤝 Acknowledgments
-- Special thanks to the development team.
-- Inspired by sustainable farming practices and eco-friendly waste management.
+---
 
-- For any queries, reach out to the team or open an issue on GitHub. 🚀
+## 👨‍👩‍👧‍👦 Team Members
+- **Sajivan K.**  
+- **Apinaja E.**  
+- **Tharmika N.**  
+- **Vishnuja T.**  
+- **Jithushan P.**
 
+---
+
+## 🛠️ My Contribution – Sajivan K.
+
+I was primarily responsible for **Farmer & Product Management** and the **Payment Gateway integration**.  
+My role ensured that farmers had full control over their products, consumers had a seamless shopping experience, and transactions were secure and transparent.  
+
+### 🔑 Modules I Developed
+
+#### 1. Farmer Management
+- **Farmer Registration & Verification**  
+  - Farmers can register with farm details, upload documents, and verify via OTP.  
+- **Product Management (CRUD)**  
+  - Add, edit, and delete products with details like name, description, price, stock, category, and images.  
+- **QR Code Generation**  
+  - Each product automatically generates a QR code.  
+  - Consumers can scan the QR code to view farmer details, product origin, and authenticity.  
+- **Subscription Packages**  
+  - Farmers can create recurring delivery packages (weekly/monthly).  
+  - Provides stable income for farmers and convenience for consumers.  
+- **Analytics Dashboard**  
+  - Track sales, order history, income summaries, and product performance.
+
+#### 2. Payment Gateway
+- **Secure Transactions**  
+  - Integrated OTP-based and email-verified payments.  
+  - Supports multiple methods: card, wallet, bank transfer, and cash-on-delivery.  
+- **Order-Linked Payments**  
+  - Payments tied directly to specific order IDs for transparency.  
+- **PDF Invoices**  
+  - Auto-generated receipts sent via email and downloadable from the dashboard.  
+- **Notifications**  
+  - Real-time updates to farmers and consumers about orders, payments, and delivery status.
+
+---
+
+### 💡 Innovations I Contributed
+- **QR Code Transparency** → Built trust by linking every product to farmer and product details.  
+- **Subscription-Based Sales Model** → Enabled recurring income for farmers and reliable fresh produce for consumers.  
+- **AI-Powered Chatbot Support** → Assisted farmers with farming queries and product management (multilingual, including Tamil).  
+- **Email Notification System** → Automated updates for order confirmations, payments, and delivery tracking using Nodemailer + Brevo.  
+
+---
+
+## 🚀 Tech Stack
+- **Frontend:** React.js  
+- **Backend:** Node.js + Express.js  
+- **Database:** MongoDB  
+- **Authentication:** JWT-based with role-based access  
+- **Notifications:** Nodemailer, Brevo  
+- **Payment Gateway:** Custom secure gateway with OTP & email verification  
+- **Other Tools:** Figma (UI/UX), GitHub (Version Control), Postman (API Testing), Trello (Task Management)
+
+---
+
+## 📌 Conclusion
+GreenHarvest is more than just a university project—it is a **scalable solution** that:  
+- Empowers farmers with digital tools.  
+- Provides consumers with fresh, affordable, and transparent produce.  
+- Encourages sustainability through smart waste management.  
+
+My part ensured **farmers and consumers had a secure, transparent, and innovative marketplace experience**, laying the foundation for a future-ready digital agriculture system.
